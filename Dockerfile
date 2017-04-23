@@ -1,7 +1,7 @@
 
 #pull base image
 
-FROM centos:latest
+FROM centos:7
 
 MAINTAINER preluoc "pre_luoc@sina.com"
 
@@ -47,15 +47,20 @@ RUN  yum install -y kde-l10n-Chinese
 
 RUN  yum reinstall -y glibc-common
 
+
 #拷贝资源
 COPY res /root/res/
 
+RUN  yum install -y wget
+
 #java下载
-RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" download.oracle.com/otn-pub/java/jdk/8u111-b14/jdk-8u111-linux-x64.tar.gz -O /root/res/jdk-8u111-linux-x64.tar.gz
+RUN  wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" download.oracle.com/otn-pub/java/jdk/8u111-b14/jdk-8u111-linux-x64.tar.gz -O /root/res/jdk-8u111-linux-x64.tar.gz
 
+#RUN  curl http://mirror.bit.edu.cn/apache//maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz -o /root/res/apache-maven-3.3.9-bin.tar.gz
 
-#时间戳
-RUN  \cp -rf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
+#RUN  curl https://cmake.org/files/v2.8/cmake-2.8.8.tar.gz -o /root/res/cmake-2.8.8.tar.gz
+
+#RUN  curl http://www.caucho.com/download/resin-4.0.49.tar.gz -o /root/res/resin-4.0.49.tar.gz
 
 COPY init /root/init/
 

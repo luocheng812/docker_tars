@@ -1,8 +1,6 @@
 
 #!/bin/bash
 
-set -e
-
 if [ -d /root/init ];then
 	
 	for x in $(ls /root/init)
@@ -20,7 +18,13 @@ case ${1} in
 	init)
 		;;
 	start)
-		service mysql start
+		source /etc/profile
+
+		export LANG="zh_CN.UTF-8"
+		#时间戳
+	    cp -rf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
+
+		/etc/init.d/mysql restart
 		exec /usr/local/resin/bin/resin.sh start
 		;;
 	*)
