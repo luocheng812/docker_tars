@@ -1,0 +1,2 @@
+/usr/bin/ar cr ../lib/libtarsparse.a  CMakeFiles/tarsparse.dir/parse.cpp.o CMakeFiles/tarsparse.dir/element.cpp.o CMakeFiles/tarsparse.dir/tars.lex.cpp.o CMakeFiles/tarsparse.dir/tars.tab.cpp.o
+/usr/bin/ranlib ../lib/libtarsparse.a

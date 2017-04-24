@@ -7,6 +7,16 @@ install_mysql(){
 
 	echo "install mysql ....."
 
+	cd /root/res
+
+	##安装mysql
+	tar zxvf mysql-5.6.26.tar.gz
+	cd mysql-5.6.26
+	cmake . -DCMAKE_INSTALL_PREFIX=/usr/local/mysql-5.6.26 -DWITH_INNOBASE_STORAGE_ENGINE=1 -DMYSQL_USER=mysql -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci
+	make
+	make install
+	ln -s /usr/local/mysql-5.6.26 /usr/local/mysql
+
 	cd /usr/local/mysql
 	useradd mysql
 	rm -rf /usr/local/mysql/data
@@ -18,23 +28,25 @@ install_mysql(){
 	perl scripts/mysql_install_db --user=mysql
 
 	sed -i "s/192.168.2.131/${MachineIp}/g" /root/Tars/build/conf/my.cnf
-	echo "chkconfig --list mysqld" > /root/Tars/build/conf/my.cnf
-	cp /root/Tars/build/conf/my.cnf /etc/my.cnf
-
+	cp /root/Tars/build/conf/my.cnf /usr/local/mysql/
 
 	/etc/init.d/mysql start
+
+	##添加mysql的bin路径
+	echo "PATH=\$PATH:/usr/local/mysql/bin" >> /etc/profile
+	echo "export PATH" >> /etc/profile
+	. /etc/profile
 
 
 	##修改mysql root密码
 	cd /usr/local/mysql/
 	./bin/mysqladmin -u root password 'root@appinside'
-#	./bin/mysqladmin -u root -h ${MachineName} password 'root@appinside'
+	#	./bin/mysqladmin -u root -h ${MachineName} password 'root@appinside'
 
 
 	##添加mysql的库路径
 	echo "/usr/local/mysql/lib/" >> /etc/ld.so.conf
 	ldconfig
-
 }
 
 
@@ -69,7 +81,6 @@ build_cpp_framework(){
 	echo "build cpp framework ...."
 
 	##安装c++语言框架
-	cd /root/Tars/cpp/build/
 	chmod u+x /root/Tars/cpp/build/build.sh
 	/root/Tars/cpp/build/build.sh all
 	/root/Tars/cpp/build/build.sh install
@@ -80,7 +91,6 @@ build_cpp_framework(){
 	mysql -uroot -proot@appinside -e "grant all on *.* to 'tars'@'${MachineName}' identified by 'tars2015' with grant option;"
 	mysql -uroot -proot@appinside -e "flush privileges;"
 
-	cd /root/Tars/cpp/framework/sql/
 	sed -i "s/192.168.2.131/${MachineIp}/g" `grep 192.168.2.131 -rl /root/Tars/cpp/framework/sql/*`
 	sed -i "s/db.tars.com/${MachineIp}/g" `grep db.tars.com -rl /root/Tars/cpp/framework/sql/*`
 	chmod u+x /root/Tars/cpp/framework/sql/exec-sql.sh
@@ -99,9 +109,7 @@ build_cpp_framework(){
 
 	##安装核心基础服务
 	mkdir -p /usr/local/app/tars/
-	cd /root/Tars/cpp/build/
 	cp /root/Tars/cpp/build/framework.tgz /usr/local/app/tars/
-	cd /usr/local/app/tars
 	tar xzfv framework.tgz
 
 	sed -i "s/192.168.2.131/${MachineIp}/g" `grep 192.168.2.131 -rl /usr/local/app/tars/*`
@@ -144,6 +152,7 @@ MachineIp=$(ip addr | grep inet | grep eth0 | awk '{print $2;}' | sed 's|/.*$||'
 MachineName=$(cat /etc/hosts | grep ${MachineIp} | awk '{print $1}')
 
 
+install_mysql
 install_resin
 
 build_java_framework

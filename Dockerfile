@@ -59,19 +59,13 @@ RUN  yum install -y maven
 
 RUN  yum install -y java
 
-RUN  wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
-
-RUN  rpm -ivh mysql57-community-release-el7-9.noarch.rpm
-
-RUN  yum -y install mysql-community-server
-
 COPY init /root/init/
 
 COPY entrypoint.sh /sbin/
 
-#ENTRYPOINT  ["/bin/bash","/sbin/entrypoint.sh"]
+ENTRYPOINT  ["/bin/bash","/sbin/entrypoint.sh"]
 
-#CMD ["start"]
+CMD ["start"]
 
 #Expose ports
 EXPOSE 8080

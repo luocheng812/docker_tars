@@ -1,0 +1,1 @@
+/usr/bin/c++    -g -O2 -Wall -Wno-deprecated    CMakeFiles/testAdminRegistry.dir/main.cpp.o  -o ../bin/testAdminRegistry -rdynamic ../../../servant/lib/libtarsservant.a ../../../tools/lib/libtarsparse.a ../../../util/lib/libtarsutil.a -lpthread -lz -lrt 

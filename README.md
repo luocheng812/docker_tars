@@ -1,5 +1,14 @@
-# docker for tars
+Tars构建工程
 
-docker build -t tars  .
-
-docker run -d -p 8080:8080 -v /tmp:/root/Tars/cpp/build tars
+编译
+```
+build.sh all
+```
+清理
+```
+build.sh cleanall
+```
+安装
+```
+build.sh install
+```

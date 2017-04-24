@@ -1,0 +1,1 @@
+/usr/bin/c++    -g -O2 -Wall -Wno-deprecated    CMakeFiles/example_tc_config.dir/example_tc_config.cpp.o  -o ../bin/example_tc_config -rdynamic ../../util/lib/libtarsutil.a /usr/local/mysql/lib/libmysqlclient.a -lpthread -lz -ldl -lrt 

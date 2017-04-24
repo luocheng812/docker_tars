@@ -18,14 +18,13 @@ case ${1} in
 	init)
 		;;
 	start)
-		source /etc/profile
 
 		export LANG="zh_CN.UTF-8"
 		#时间戳
 	    cp -rf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 
 		/etc/init.d/mysql restart
-		exec /usr/local/resin/bin/resin.sh start
+		exec /usr/local/resin/bin/resin.sh console
 		;;
 	*)
 		exec "$@"
