@@ -1,1 +1,0 @@
-/usr/bin/c++    -g -O2 -Wall -Wno-deprecated    CMakeFiles/test-tup.dir/main.cpp.o  -o ../bin/test-tup -rdynamic ../../../util/lib/libtarsutil.a -lpthread 

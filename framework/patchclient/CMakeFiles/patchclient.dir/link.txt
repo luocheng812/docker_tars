@@ -1,1 +1,0 @@
-/usr/bin/c++    -g -O2 -Wall -Wno-deprecated    CMakeFiles/patchclient.dir/tars_patch.cpp.o CMakeFiles/patchclient.dir/patchclient.cpp.o  -o patchclient -rdynamic ../../servant/lib/libtarsservant.a ../../util/lib/libtarsutil.a /usr/local/mysql/lib/libmysqlclient.a -lpthread -lz -ldl -lrt 

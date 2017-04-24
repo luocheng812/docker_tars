@@ -1,1 +1,0 @@
-/usr/bin/c++    -g -O2 -Wall -Wno-deprecated    CMakeFiles/test-tars-analyzer.dir/main.cpp.o CMakeFiles/test-tars-analyzer.dir/tarsAnalyzer.cpp.o  -o ../bin/test-tars-analyzer -rdynamic ../../../tools/lib/libtarsparse.a ../../../util/lib/libtarsutil.a -lpthread 

@@ -1,2 +1,0 @@
-/usr/bin/ar cr libpatch.a  CMakeFiles/patch.dir/tars_patch.cpp.o
-/usr/bin/ranlib libpatch.a

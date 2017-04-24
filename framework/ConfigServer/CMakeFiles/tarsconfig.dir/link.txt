@@ -1,1 +1,0 @@
-/usr/bin/c++    -g -O2 -Wall -Wno-deprecated    CMakeFiles/tarsconfig.dir/ConfigServer.cpp.o CMakeFiles/tarsconfig.dir/main.cpp.o CMakeFiles/tarsconfig.dir/ConfigImp.cpp.o  -o ../deploy/tarsconfig/bin/tarsconfig -rdynamic ../../servant/lib/libtarsservant.a ../../util/lib/libtarsutil.a /usr/local/mysql/lib/libmysqlclient.a -lpthread -lz -ldl -lrt 
