@@ -93,6 +93,8 @@ build_cpp_framework(){
 
 	sed -i "s/192.168.2.131/${MachineIp}/g" `grep 192.168.2.131 -rl /root/Tars/cpp/framework/sql/*`
 	sed -i "s/db.tars.com/${MachineIp}/g" `grep db.tars.com -rl /root/Tars/cpp/framework/sql/*`
+
+	cd /root/Tars/cpp/framework/sql/
 	chmod u+x /root/Tars/cpp/framework/sql/exec-sql.sh
 	/root/Tars/cpp/framework/sql/exec-sql.sh
 
@@ -110,6 +112,9 @@ build_cpp_framework(){
 	##安装核心基础服务
 	mkdir -p /usr/local/app/tars/
 	cp /root/Tars/cpp/build/framework.tgz /usr/local/app/tars/
+
+	cd /usr/local/app/tars/
+
 	tar xzfv framework.tgz
 
 	sed -i "s/192.168.2.131/${MachineIp}/g" `grep 192.168.2.131 -rl /usr/local/app/tars/*`

@@ -47,6 +47,10 @@ RUN  yum install -y kde-l10n-Chinese
 
 RUN  yum reinstall -y glibc-common
 
+RUN  localedef -c -f UTF-8 -i zh_CN zh_CN.utf8
+
+ENV  LC_ALL zh_CN.utf8
+
 
 #拷贝资源
 COPY res /root/res/

@@ -19,11 +19,12 @@ case ${1} in
 		;;
 	start)
 
-		export LANG="zh_CN.UTF-8"
 		#时间戳
 	    cp -rf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 
 		/etc/init.d/mysql restart
+		/usr/local/app/tars/tars_install.sh
+		/usr/local/app/tars/tarspatch/util/init.sh
 		exec /usr/local/resin/bin/resin.sh console
 		;;
 	*)
