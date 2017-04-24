@@ -1,71 +1,11 @@
 #!/bin/bash
 
 
-set -e
-
-install_cmake(){
-
-	echo "install cmake ...."
-
-	##安装cmake
-	cd /root/res
-
-	tar zxvf cmake-2.8.8.tar.gz
-	cd cmake-2.8.8
-	./bootstrap
-	make
-	make install
-
-}
-
-
-install_java(){
-
-	echo "install java ..... "
-
-	cd /root/res
-	##安装java jdk
-	tar zxvf jdk-8u111-linux-x64.tar.gz
-	echo "export JAVA_HOME=${ResourceDir}/jdk1.8.0_111" >> /etc/profile
-	echo "CLASSPATH=\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar" >> /etc/profile
-	echo "PATH=\$JAVA_HOME/bin:\$PATH" >> /etc/profile
-	echo "export PATH JAVA_HOME CLASSPATH" >> /etc/profile
-
-	. /etc/profile
-}
-
-
-
-install_maven(){
-
-	echo "install maven ...."
-
-	cd /root/res
-
-	##安装maven
-	tar zxvf apache-maven-3.3.9-bin.tar.gz
-	echo "export MAVEN_HOME=${ResourceDir}/apache-maven-3.3.9/" >> /etc/profile
-	echo "export PATH=\$PATH:\$MAVEN_HOME/bin" >> /etc/profile
-
-	. /etc/profile
-
-}
-
 
 
 install_mysql(){
 
 	echo "install mysql ....."
-
-	cd /root/res
-
-	##安装mysql
-	tar zxvf mysql-5.6.26.tar.gz
-	cd mysql-5.6.26
-	cmake . -DCMAKE_INSTALL_PREFIX=/usr/local/mysql-5.6.26 -DWITH_INNOBASE_STORAGE_ENGINE=1 -DMYSQL_USER=mysql -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci
-	make
-	make install
-	ln -s /usr/local/mysql-5.6.26 /usr/local/mysql
 
 	cd /usr/local/mysql
 	useradd mysql
@@ -78,16 +18,11 @@ install_mysql(){
 	perl scripts/mysql_install_db --user=mysql
 
 	sed -i "s/192.168.2.131/${MachineIp}/g" /root/Tars/build/conf/my.cnf
-	cp /root/Tars/build/conf/my.cnf /usr/local/mysql/
+	echo "chkconfig --list mysqld" > /root/Tars/build/conf/my.cnf
+	cp /root/Tars/build/conf/my.cnf /etc/my.cnf
 
 
 	/etc/init.d/mysql start
-
-
-	##添加mysql的bin路径
-	echo "PATH=\$PATH:/usr/local/mysql/bin" >> /etc/profile
-	echo "export PATH" >> /etc/profile
-	. /etc/profile
 
 
 	##修改mysql root密码
@@ -120,22 +55,11 @@ install_resin(){
 	ln -s /usr/local/resin-4.0.49 /usr/local/resin
 }
 
-install_repository(){
-
-	echo "install repository"
-
-	cd /root/res
-
-	#安装
-	tar zxvf repository.tar.gz
-
-	rm -rf /root/.m2/repository
-	cp -r /root/res/repository /root/.m2/
-}
 
 build_java_framework(){
 	##安装java语言框架
 	cd /root/Tars/java
+	mvn clean install
 	mvn clean install -f /root/Tars/java/core/client.pom.xml 
 	mvn clean install -f /root/Tars/java/core/server.pom.xml
 }
@@ -203,7 +127,10 @@ build_web_mgr(){
 	sed -i "s/registry1.tars.com/${MachineIp}/g" `grep registry1.tars.com -rl /root/Tars/web/src/main/resources/*`
 	sed -i "s/registry2.tars.com/${MachineIp}/g" `grep registry2.tars.com -rl /root/Tars/web/src/main/resources/*`
 
+	#mvn -X clean install
+
 	mvn clean package
+
 	cp /root/Tars/web/target/tars.war /usr/local/resin/webapps/
 
 	mkdir -p /data/log/tars/
@@ -217,12 +144,7 @@ MachineIp=$(ip addr | grep inet | grep eth0 | awk '{print $2;}' | sed 's|/.*$||'
 MachineName=$(cat /etc/hosts | grep ${MachineIp} | awk '{print $1}')
 
 
-install_cmake
-install_java
-install_maven
-install_mysql
 install_resin
-install_repository
 
 build_java_framework
 build_cpp_framework
